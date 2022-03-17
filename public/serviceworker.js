@@ -3,6 +3,7 @@ const urlsToCache = ["index.html", "offline.html"];
 const self = this;
 // Install SW
 self.addEventListener("install", (event) => {
+  console.log("attempting to install service worker");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache");

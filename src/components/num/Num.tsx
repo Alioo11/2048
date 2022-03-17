@@ -1,7 +1,9 @@
-import React from 'react'
+import {memo} from 'react'
 import "./num.css"
 
 const Num = ({num}:{num:number})=>{
+
+    console.log('%crunning Num' , "background:red")
 
     const numColors = [
         "#DAC970",
@@ -19,8 +21,6 @@ const Num = ({num}:{num:number})=>{
         "#56E85B",
         "#B23100",
     ]
-
-
 
     const numState = Math.floor(Math.log2(num))
     const numStateLength = num.toString().length
@@ -40,4 +40,4 @@ const Num = ({num}:{num:number})=>{
     </div>
 }
 
-export default Num
+export default memo(Num) 

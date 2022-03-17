@@ -2,7 +2,7 @@ import react from 'react'
 import './initPage.css'
 
 const InitPage = ({setBoardSize}:{setBoardSize:Function})=>{
-
+    console.log('%crendering initPage','background:green')
     return <div>
         <h2>select board size</h2>
             <div className='grid'>
