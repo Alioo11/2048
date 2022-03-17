@@ -1,0 +1,26 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0.8rem 0.5rem;
+  width: 80%;
+  margin: auto;
+}
+
+.grid_item {
+  background-color: rgb(203, 199, 79);
+  color: white;
+  font-size: 2rem;
+  font-weight: 800;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 550px) {
+  .grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .grid_item {
+    padding: 0.1rem;
+  }
+}

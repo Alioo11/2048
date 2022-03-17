@@ -1,0 +1,29 @@
+:root {
+  --dark-brown: #bbada0;
+  --white-brown: #cdc0b4;
+  --level-color1: rgb(218, 201, 112);
+  --level-color2: rgb(235, 204, 47);
+}
+
+@keyframes numAnimation {
+  0% {
+    transform: scale(0.2);
+  }
+  90% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.num {
+  background-color: var(--level-color1);
+  width: 100%;
+  height: 100%;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: numAnimation 200ms;
+}

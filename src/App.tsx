@@ -1,25 +1,30 @@
-import React from 'react';
+import React , {useEffect, useState , useContext} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { setBoardSize } from './utils/commonFunctions';
+
+import Board from './components/board/Board';
+import Navbar from './components/navBar/Navbar';
+import InitPage from './components/initPage/Initpage';
+
 
 function App() {
-  return (
+
+
+  const [showInitPage , setShowInitPage] = useState(true)
+  const [BoardSize , setBoardSize] = useState(0)
+
+  useEffect(()=>{
+    return ()=> setShowInitPage(false)
+  },[BoardSize])
+
+  return ( 
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar/>
+      {!showInitPage && <Board BoardSize = {BoardSize}/>}
+      {showInitPage && <InitPage setBoardSize = {setBoardSize}/>}
     </div>
+    
   );
 }
 
