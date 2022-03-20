@@ -237,7 +237,17 @@ const getAnimationData = (board: Array<Array<number>>, direction: directions): A
   let moveDirections: Array<Array<Number>> = [];
   switch (direction) {
     case directions.up: {
-      for (let i = 0; i < board.length; i++) {}
+      const newBoard: Array<Array<Number>> = [];
+      for (let i = 0; i < board.length; i++) {
+        const col = [];
+        for (let j = 0; j < board.length; j++) {
+          col.push(board[j][i]);
+        }
+        newBoard.push(squizeAnimations(col));
+      }
+      moveDirections = newBoard[0].map((val, index) => newBoard.map((row) => row[index]));
+
+      return moveDirections;
       break;
     }
     case directions.right: {
@@ -251,6 +261,21 @@ const getAnimationData = (board: Array<Array<number>>, direction: directions): A
       break;
     }
     case directions.down: {
+      const newBoard: Array<Array<Number>> = [];
+      for (let i = 0; i < board.length; i++) {
+        const col = [];
+        for (let j = 0; j < board.length; j++) {
+          col.push(board[board.length - 1 - j][i]);
+        }
+        newBoard.push(squizeAnimations(col));
+      }
+      for (let i = 0; i < board.length; i++) {
+        const col = [];
+        for (let j = 0; j < board.length; j++) {
+          col.push(newBoard[j][i]);
+        }
+        moveDirections.unshift(col);
+      }
       break;
     }
     case directions.left: {
@@ -271,14 +296,21 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
   const moveData = getAnimationData(board, direction);
   console.log(moveData);
   const temp: any = moveData.flat();
-  const Styles: object[] = filteredNodes.map((item: any) => {
-    return item.firstChild.style;
-  });
+  // const Styles: object[] = filteredNodes.map((item: any) => {
+  //   return item.firstChild.style;
+  // });
 
   //console.log(Styles);
 
   switch (direction) {
     case directions.up: {
+      for (let i = 0; i < HTMLInputs.length; i++) {
+        //console.log(HTMLInputs[i].firstChild);
+        if (HTMLInputs[i].firstChild) {
+          HTMLInputs[i].firstChild.style.transform = `translate(0px, ${temp[i] * (500 / boardSize + 2)}px)`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+        }
+      }
       break;
     }
     case directions.right: {
