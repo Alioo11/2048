@@ -15,7 +15,7 @@ export const colorPlate = [];
 
 export let BoardSize = 3;
 
-export const animationDuration: number = 200;
+export const animationDuration: number = 500;
 
 export const setBoardSize = (newBoardSize: number) => {
   BoardSize = newBoardSize;
@@ -210,7 +210,7 @@ export const squizeAnimations = (userInput: Array<number>): Array<Number> => {
     } else if (entry[i] === currentNode) {
       entry[i] = -1;
       entry[currentNodeIndex - 1] = entry[currentNodeIndex - 1] * 2;
-      currentNode = currentNode * 2;
+      //currentNode = currentNode * 2;
       animationData.push(currentNodeIndex - i - 1);
     } else if (entry[i] !== currentNode) {
       currentNode = entry[i];
