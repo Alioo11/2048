@@ -1,7 +1,8 @@
 import React ,{useEffect, useState , useRef, useDebugValue , useCallback}from 'react'
-import { directions , slide , addRandomItemtoBoard} from '../../utils/commonFunctions'
+import { directions , slide , addRandomItemtoBoard ,squizeAnimations, getAnimationData} from '../../utils/commonFunctions'
 import "./Board.css"
 import Num from '../num/Num'
+import { JsxElement } from 'typescript'
 
 
 const initBoard = (size :number) :Array<Array<number>> =>{
@@ -11,19 +12,24 @@ const initBoard = (size :number) :Array<Array<number>> =>{
         for(let j=0 ; j<size ; j++){
             if( i*size +j === Math.floor((size**2)/2) || 
              i*size +j === Math.floor((size**2)/2) +3 ||
-            i*size +j === Math.floor((size**2)/2) +4  ||
+             i*size +j === Math.floor((size**2)/2) +4 ||
             i*size +j === Math.floor((size**2)/2) +5){
                 row.push(2)
-            }else{row.push(-1)}
+            }else{row.push(2)}
         }
         matrix.push(row)
     }
     return matrix
 }
 
-
 const Board = ({BoardSize}:{BoardSize:number})=>{
+
+
+    const cellSize = 500 / BoardSize
+
+    const boardRef:any = useRef([])
     const overLayRef:any = useRef(null)
+
 
     const [startTouchCOR , setStartTouchCOR] = useState({X : 0 , Y :0})
     const [endTouchCOR , setEndTouchCOR] = useState({X: 0 , Y:0})
@@ -62,7 +68,7 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
         return ()=> document.removeEventListener('keydown', defineEvent)
     },[])
 
-    
+
     useEffect(()=>{
         if(overLayRef && overLayRef.current){
             overLayRef.current.addEventListener('touchstart', startTouch )
@@ -75,6 +81,10 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
     },[])
 
     const [board, setBoard] = useState(initBoard(BoardSize))
+
+    // useEffect(()=>{
+    //     console.log(boardRef.current.filter((item:JsxElement)=>item))
+    // },[board])
 
     const defineEvent = (e:KeyboardEvent)=>{
         switch(e.key){
@@ -99,33 +109,42 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
                 break;
             }
             default:{
-                console.log('unknown key')
+                //console.log('unknown key')
             }
         }
     }
-    const defineTouchEvents = (direction : directions)=>{
-        console.log('defineing events')
+
+    const onWaiting = (delayTime : number|undefined)=>{
+        return new Promise((res , rej)=>{
+            setTimeout(() => {
+                res(null)
+            }, delayTime ? delayTime : 300);
+        })
+    }
+
+    const defineTouchEvents = async  (direction : directions)=>{
+
         setBoard((board)=>slide(board , direction))
         setBoard(board => addRandomItemtoBoard(board))
     }
 
     const startTouch = (e:TouchEvent)=>{
-        console.log('runnign start Touch')
+        //console.log('runnign start Touch')
         setStartTouchCOR({ X: e.changedTouches[0].screenX , Y :e.changedTouches[0].screenY})
 
     }
     const endTouch = (e:TouchEvent)=>{
-        console.log('runnign end Touch')
+        //console.log('runnign end Touch')
         setEndTouchCOR({ X: e.changedTouches[0].screenX , Y :e.changedTouches[0].screenY})
     }
 
 
     useEffect(()=>{
-        console.log('ruuning init board')
+        //console.log('ruuning init board')
         setBoard(initBoard(BoardSize))
     },[BoardSize])
 
-    console.log('board global')
+    //console.log('board global')
 
     return <div className='boardContainer'> 
         <div ref={overLayRef} className='overLay'></div>
@@ -135,8 +154,8 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
             {board.map((row , rowIndex)=>{
                return row.map((cell , cellIndex)=>{
                     return (
-                        <div key={rowIndex * BoardSize + cellIndex} className='cell'>
-                            {cell !== -1 && <Num num={cell}/>}
+                        <div key={rowIndex * BoardSize + cellIndex} ref={el => boardRef.current[rowIndex * BoardSize + cellIndex] = el} className='cell'>
+                            {cell !== -1 && <Num  num={cell}/>}
                         </div>
                     )
                 })
