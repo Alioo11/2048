@@ -233,7 +233,7 @@ const onWaiting = (delayTime?: number): Promise<null> => {
   });
 };
 
-const getAnimationData = (board: Array<Array<number>>, direction: directions) => {
+const getAnimationData = (board: Array<Array<number>>, direction: directions): Array<Array<Number>> => {
   let moveDirections: Array<Array<Number>> = [];
   switch (direction) {
     case directions.up: {
@@ -241,6 +241,13 @@ const getAnimationData = (board: Array<Array<number>>, direction: directions) =>
       break;
     }
     case directions.right: {
+      for (let i = 0; i < board.length; i++) {
+        const col = [];
+        for (let j = 0; j < board.length; j++) {
+          col.push(board[i][board.length - 1 - j]);
+        }
+        moveDirections.push(squizeAnimations(col).reverse());
+      }
       break;
     }
     case directions.down: {
@@ -262,21 +269,44 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
   const filteredNodes = HTMLInputs.filter((item: HTMLDivElement) => item.firstChild);
 
   const moveData = getAnimationData(board, direction);
-  const temp: any = moveData.flat();
   console.log(moveData);
+  const temp: any = moveData.flat();
   const Styles: object[] = filteredNodes.map((item: any) => {
     return item.firstChild.style;
   });
 
   //console.log(Styles);
 
-  for (let i = 0; i < HTMLInputs.length; i++) {
-    //console.log(HTMLInputs[i].firstChild);
-    if (HTMLInputs[i].firstChild) {
-      HTMLInputs[i].firstChild.style.transform = `translate(${temp[i] * (500 / boardSize + 2)}px, 0px)`;
-      HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+  switch (direction) {
+    case directions.up: {
+      break;
+    }
+    case directions.right: {
+      const newArray = temp.map((item: number) => (item !== 0 ? -1 * item : 0));
+      for (let i = 0; i < HTMLInputs.length; i++) {
+        //console.log(HTMLInputs[i].firstChild);
+        if (HTMLInputs[i].firstChild) {
+          HTMLInputs[i].firstChild.style.transform = `translate(${newArray[i] * (500 / boardSize + 2)}px, 0px)`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+        }
+      }
+      break;
+    }
+    case directions.down: {
+      break;
+    }
+    case directions.left: {
+      for (let i = 0; i < HTMLInputs.length; i++) {
+        //console.log(HTMLInputs[i].firstChild);
+        if (HTMLInputs[i].firstChild) {
+          HTMLInputs[i].firstChild.style.transform = `translate(${temp[i] * (500 / boardSize + 2)}px, 0px)`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+        }
+      }
+      break;
     }
   }
+
   await onWaiting(animationDuration);
   for (let i = 0; i < HTMLInputs.length; i++) {
     //console.log(HTMLInputs[i].firstChild);
