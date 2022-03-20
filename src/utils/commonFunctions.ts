@@ -15,7 +15,7 @@ export const colorPlate = [];
 
 export let BoardSize = 3;
 
-export const animationDuration: number = 500;
+export const animationDuration: number = 200;
 
 export const setBoardSize = (newBoardSize: number) => {
   BoardSize = newBoardSize;
@@ -294,13 +294,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
   const filteredNodes = HTMLInputs.filter((item: HTMLDivElement) => item.firstChild);
 
   const moveData = getAnimationData(board, direction);
-  console.log(moveData);
   const temp: any = moveData.flat();
-  // const Styles: object[] = filteredNodes.map((item: any) => {
-  //   return item.firstChild.style;
-  // });
-
-  //console.log(Styles);
 
   switch (direction) {
     case directions.up: {
@@ -308,7 +302,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(0px, ${temp[i] * (500 / boardSize + 2)}px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
         }
       }
       break;
@@ -319,7 +313,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(${newArray[i] * (500 / boardSize + 2)}px, 0px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
         }
       }
       break;
@@ -329,7 +323,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(0px, ${-1 * temp[i] * (500 / boardSize + 2)}px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
         }
       }
       break;
@@ -339,7 +333,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(${temp[i] * (500 / boardSize + 2)}px, 0px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
         }
       }
       break;
@@ -353,4 +347,42 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
 
     HTMLInputs[i].firstChild && (HTMLInputs[i].firstChild.style.transition = "");
   }
+};
+
+const calculateRowScore = (row: Array<number>): number => {
+  let entry = row;
+  let currentNode: number | null = null;
+  let currentNodeIndex: number = 0;
+  let rowScore: number = 0;
+
+  const swap = (num1: number, num2: number) => {
+    const arr = entry;
+    const tempState = arr[num1];
+    arr[num1] = arr[num2];
+    arr[num2] = tempState;
+    return arr;
+  };
+
+  for (let i = 0; i < entry.length; i++) {
+    if (entry[i] === -1) continue;
+    else if (entry[i] === currentNode) {
+      entry[i] = -1;
+      entry[currentNodeIndex - 1] = entry[currentNodeIndex - 1] * 2;
+      currentNode = currentNode * 2;
+    } else if (entry[i] !== currentNode) {
+      currentNode = entry[i];
+      rowScore += 1 * entry[i];
+      swap(i, currentNodeIndex);
+      currentNodeIndex += 1;
+    }
+  }
+  return rowScore;
+};
+
+export const calculateScore = (board: Array<Array<number>>, direction: directions): any => {
+  let totalScore: number = 0;
+  for (let i = 0; i < board.length; i++) {
+    totalScore += calculateRowScore(board[i]);
+  }
+  return totalScore;
 };

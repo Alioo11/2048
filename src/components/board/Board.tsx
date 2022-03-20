@@ -1,8 +1,7 @@
-import React ,{useEffect, useState , useRef, useDebugValue , useCallback, HTMLAttributeReferrerPolicy}from 'react'
-import { directions , slide , addRandomItemtoBoard ,squizeAnimations , handleAnimations} from '../../utils/commonFunctions'
+import React ,{useEffect, useState , useRef}from 'react'
+import { directions , slide , addRandomItemtoBoard, handleAnimations} from '../../utils/commonFunctions'
 import "./Board.css"
 import Num from '../num/Num'
-import { JsxElement } from 'typescript'
 
 
 const initBoard = (size :number) :Array<Array<number>> =>{
@@ -30,6 +29,7 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
 
     const overLayRef:any = useRef(null)
 
+    let isInAnimations:boolean = false
 
     const [startTouchCOR , setStartTouchCOR] = useState({X : 0 , Y :0})
     const [endTouchCOR , setEndTouchCOR] = useState({X: 0 , Y:0})
@@ -86,24 +86,28 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
     //     console.log(boardRef.current.filter((item:JsxElement)=>item))
     // },[board])
 
-    const defineEvent = (e:KeyboardEvent)=>{
+    const defineEvent = async (e:KeyboardEvent)=>{
         switch(e.key){
             case "ArrowUp":{
+                await handleAnimations(boardRef.current ,board, directions.up , BoardSize)
                 setBoard((board)=>slide(board , directions.up))
                 setBoard(board => addRandomItemtoBoard(board))
                  break;
             }
             case "ArrowRight":{
+                await handleAnimations(boardRef.current ,board, directions.right , BoardSize)
                 setBoard((board)=>slide(board , directions.right))
                 setBoard(board => addRandomItemtoBoard(board))
                 break;
             }
             case "ArrowDown":{
+                await handleAnimations(boardRef.current ,board, directions.down , BoardSize)
                 setBoard((board)=>slide(board , directions.down))
                 setBoard(board => addRandomItemtoBoard(board))
                 break;
             }
             case "ArrowLeft":{
+                await handleAnimations(boardRef.current ,board, directions.left , BoardSize)
                 setBoard((board)=>slide(board , directions.left))
                 setBoard(board => addRandomItemtoBoard(board))
                 break;
@@ -116,9 +120,14 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
 
 
     const defineTouchEvents = async  (direction : directions)=>{
+        if(!isInAnimations) {
+        isInAnimations = true
+        //console.log(calculateScore(board , direction))
         await handleAnimations(boardRef.current ,board, direction , BoardSize)
         setBoard((board)=>slide(board , direction))
         setBoard(board => addRandomItemtoBoard(board))
+        isInAnimations = false
+    }
     }
 
     const startTouch = (e:TouchEvent)=>{

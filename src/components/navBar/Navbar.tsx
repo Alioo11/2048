@@ -5,7 +5,7 @@ const Navbar = ()=>{
     console.log('rendering nav')
     return <nav className='nav'>
         <div className='score'>
-            score : 45
+            score : 5
         </div>
     </nav>
 }

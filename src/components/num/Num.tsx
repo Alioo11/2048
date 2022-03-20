@@ -1,5 +1,4 @@
-import {memo ,forwardRef, ForwardedRef , useRef} from 'react'
-import { Coor } from '../../utils/commonFunctions'
+import {memo } from 'react'
 
 import "./num.css"
 

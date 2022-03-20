@@ -9,9 +9,6 @@ import InitPage from './components/initPage/Initpage';
 
 function App() {
 
-
-  //console.log = function(){}
-
   const [showInitPage , setShowInitPage] = useState(true)
   const [BoardSize , setBoardSize] = useState(0)
 
