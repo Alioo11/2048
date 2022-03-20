@@ -1,5 +1,5 @@
-import React ,{useEffect, useState , useRef, useDebugValue , useCallback}from 'react'
-import { directions , slide , addRandomItemtoBoard ,squizeAnimations, getAnimationData} from '../../utils/commonFunctions'
+import React ,{useEffect, useState , useRef, useDebugValue , useCallback, HTMLAttributeReferrerPolicy}from 'react'
+import { directions , slide , addRandomItemtoBoard ,squizeAnimations , handleAnimations} from '../../utils/commonFunctions'
 import "./Board.css"
 import Num from '../num/Num'
 import { JsxElement } from 'typescript'
@@ -15,7 +15,7 @@ const initBoard = (size :number) :Array<Array<number>> =>{
              i*size +j === Math.floor((size**2)/2) +4 ||
             i*size +j === Math.floor((size**2)/2) +5){
                 row.push(2)
-            }else{row.push(2)}
+            }else{row.push(-1)}
         }
         matrix.push(row)
     }
@@ -24,10 +24,10 @@ const initBoard = (size :number) :Array<Array<number>> =>{
 
 const Board = ({BoardSize}:{BoardSize:number})=>{
 
-
     const cellSize = 500 / BoardSize
 
-    const boardRef:any = useRef([])
+    const boardRef = useRef<any>([])
+
     const overLayRef:any = useRef(null)
 
 
@@ -114,16 +114,9 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
         }
     }
 
-    const onWaiting = (delayTime : number|undefined)=>{
-        return new Promise((res , rej)=>{
-            setTimeout(() => {
-                res(null)
-            }, delayTime ? delayTime : 300);
-        })
-    }
 
     const defineTouchEvents = async  (direction : directions)=>{
-
+        await handleAnimations(boardRef.current ,board, direction , BoardSize)
         setBoard((board)=>slide(board , direction))
         setBoard(board => addRandomItemtoBoard(board))
     }
@@ -154,7 +147,7 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
             {board.map((row , rowIndex)=>{
                return row.map((cell , cellIndex)=>{
                     return (
-                        <div key={rowIndex * BoardSize + cellIndex} ref={el => boardRef.current[rowIndex * BoardSize + cellIndex] = el} className='cell'>
+                        <div key={rowIndex * BoardSize + cellIndex} ref={el => boardRef.current[rowIndex * BoardSize + cellIndex] = el } className='cell'>
                             {cell !== -1 && <Num  num={cell}/>}
                         </div>
                     )

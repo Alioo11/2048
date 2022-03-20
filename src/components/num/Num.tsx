@@ -23,27 +23,12 @@ const numColors = [
 
 const Num =  ( {num}:{num:number} )=>{
 
-    //console.log('%crunning Num' , "background:red")
-
-    const numRef:any = useRef(null)
-
     const numState = Math.floor(Math.log2(num))
     const numStateLength = num.toString().length
 
     const fontSize = (10 - numStateLength) /10 +1
 
-    window.addEventListener('click',()=>{
-        moveMe({x:130 , y:0})
-    })
-
-
-    //console.log(numRef?.current)
-    const moveMe = (Cor :Coor):void=>{
-        if(!numRef) return
-        numRef.current.style.transform = `translateX${Cor.x}`
-    }
-
-    return<div ref={numRef} className='num'
+    return<div className='num'
         style={{backgroundColor : numColors[numState%numColors.length] ,
             fontSize:`${fontSize}rem`  
         }}
