@@ -325,6 +325,13 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
       break;
     }
     case directions.down: {
+      for (let i = 0; i < HTMLInputs.length; i++) {
+        //console.log(HTMLInputs[i].firstChild);
+        if (HTMLInputs[i].firstChild) {
+          HTMLInputs[i].firstChild.style.transform = `translate(0px, ${-1 * temp[i] * (500 / boardSize + 2)}px)`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration}ms `;
+        }
+      }
       break;
     }
     case directions.left: {
