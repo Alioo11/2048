@@ -14,8 +14,19 @@ export const colorPlate = [];
 // make a loop that the defaines what color each cell should be
 
 export let BoardSize = 3;
+export const baseBum = 2;
 
-export const animationDuration: number = 200;
+export const animationDuration: number = 500;
+
+enum animationTypes {
+  linear = "linear",
+  ease = "ease",
+  ease_in = "ease-in",
+  ease_out = "ease-out",
+  ease_in_out = "ease-in-out",
+}
+
+const animationType = animationTypes.ease_in_out;
 
 export const setBoardSize = (newBoardSize: number) => {
   BoardSize = newBoardSize;
@@ -25,7 +36,7 @@ function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-const radmonPossibleSpanningNumbers = [2, 4, 8, 16];
+const radmonPossibleSpanningNumbers = [baseBum * 1, baseBum ** 2, baseBum ** 3, baseBum ** 4];
 
 export const squize2 = (userInput: Array<number>): any => {
   let entry = userInput;
@@ -68,6 +79,8 @@ export const squize2 = (userInput: Array<number>): any => {
 };
 
 export const slide = (board: Array<Array<number>>, direction: directions): Array<Array<number>> => {
+  console.log("slide is running");
+  console.log(board);
   if (direction === directions.up) {
     const newBoard: Array<Array<number>> = [];
     for (let i = 0; i < board.length; i++) {
@@ -302,7 +315,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(0px, ${temp[i] * (500 / boardSize + 2)}px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms ${animationType}`;
         }
       }
       break;
@@ -313,7 +326,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(${newArray[i] * (500 / boardSize + 2)}px, 0px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms ${animationType}`;
         }
       }
       break;
@@ -323,7 +336,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(0px, ${-1 * temp[i] * (500 / boardSize + 2)}px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms ${animationType}`;
         }
       }
       break;
@@ -333,7 +346,7 @@ export const handleAnimations = async (HTMLInputs: any, board: Array<Array<numbe
         //console.log(HTMLInputs[i].firstChild);
         if (HTMLInputs[i].firstChild) {
           HTMLInputs[i].firstChild.style.transform = `translate(${temp[i] * (500 / boardSize + 2)}px, 0px)`;
-          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms linear`;
+          HTMLInputs[i].firstChild.style.transition = `all ${animationDuration - 100}ms ${animationType}`;
         }
       }
       break;

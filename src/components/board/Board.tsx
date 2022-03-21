@@ -1,5 +1,5 @@
 import React ,{useEffect, useState , useRef}from 'react'
-import { directions , slide , addRandomItemtoBoard, handleAnimations} from '../../utils/commonFunctions'
+import { directions , slide , addRandomItemtoBoard, handleAnimations , baseBum} from '../../utils/commonFunctions'
 import "./Board.css"
 import Num from '../num/Num'
 
@@ -12,8 +12,11 @@ const initBoard = (size :number) :Array<Array<number>> =>{
             if( i*size +j === Math.floor((size**2)/2) || 
              i*size +j === Math.floor((size**2)/2) +3 ||
              i*size +j === Math.floor((size**2)/2) +4 ||
+             i*size +j === Math.floor((size**2)/2) +5 ||
+             i*size +j === Math.floor((size**2)/2) +6 ||
+             i*size +j === Math.floor((size**2)/2) +7 ||
             i*size +j === Math.floor((size**2)/2) +5){
-                row.push(2)
+                row.push(baseBum * 1)
             }else{row.push(-1)}
         }
         matrix.push(row)
@@ -82,10 +85,6 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
 
     const [board, setBoard] = useState(initBoard(BoardSize))
 
-    // useEffect(()=>{
-    //     console.log(boardRef.current.filter((item:JsxElement)=>item))
-    // },[board])
-
     const defineEvent = async (e:KeyboardEvent)=>{
         switch(e.key){
             case "ArrowUp":{
@@ -122,10 +121,9 @@ const Board = ({BoardSize}:{BoardSize:number})=>{
     const defineTouchEvents = async  (direction : directions)=>{
         if(!isInAnimations) {
         isInAnimations = true
-        //console.log(calculateScore(board , direction))
         await handleAnimations(boardRef.current ,board, direction , BoardSize)
         setBoard((board)=>slide(board , direction))
-        setBoard(board => addRandomItemtoBoard(board))
+        setBoard((board) => addRandomItemtoBoard(board))
         isInAnimations = false
     }
     }
