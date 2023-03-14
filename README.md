@@ -1,8 +1,7 @@
 
 <img src="https://user-images.githubusercontent.com/79578428/159238498-7b4c7d03-353d-4953-a543-300edc7b775b.png" alt="2048" style="margin:50px" width="100"/>
 
-2048 became one of my favorite games recently so I decited to make my own with typescript and react 
-
+2048 is fun , building one is more fun 
 
 ## Available Scripts
 
